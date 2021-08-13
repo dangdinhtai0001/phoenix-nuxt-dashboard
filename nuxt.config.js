@@ -1,7 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
-import auth from './config'
-import axios from './config'
-import tailwind from './config'
+
+import vuetify from './config/vuetify.js'
+import tailwind from './config/tailwind.js'
+
+import auth from './config/auth.js'
+import axios from './config/axios.js'
+import i18n from './config/i18n.js'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -44,46 +48,23 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     //https://tailwindcss.nuxtjs.org/
-    '@nuxtjs/tailwindcss'
+    ['@nuxtjs/tailwindcss', {tailwind}]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    ['@nuxtjs/axios', { axios }],
     // https://auth.nuxtjs.org/guide/setup/
-    '@nuxtjs/auth'
+    ['@nuxtjs/auth', { auth }],
+    // https://i18n.nuxtjs.org
+    ['@nuxtjs/i18n', { i18n }]
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: axios,
-
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
-  vuetify: {
-    customVariables: ['~/assets/variables.scss'],
-    theme: {
-      dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
-  },
+  vuetify: vuetify,
 
-  // https://tailwindcss.nuxtjs.org/options
-  tailwindcss: tailwind,
 
-  // Auth-next module configuration: https://auth.nuxtjs.org/api/options
-  auth: auth,
 
   router: {
     middleware: ['auth']
