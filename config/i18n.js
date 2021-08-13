@@ -18,6 +18,7 @@ export default {
     routes: {
 
     },
+    
     vueI18n: {
         fallbackLocale: 'vi',
         messages: { en, vi }

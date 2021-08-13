@@ -3,11 +3,12 @@ import colors from 'vuetify/es5/util/colors';
 
 export default {
     customVariables: ['~/assets/variables.scss'],
+    // optionsPath: '~/config/vuetify.options.js',
     theme: {
         dark: true,
         themes: {
             dark: {
-                primary: colors.blue.darken2,
+                primary: '#FFFFFF',
                 accent: colors.grey.darken3,
                 secondary: colors.amber.darken3,
                 info: colors.teal.lighten1,
@@ -16,7 +17,7 @@ export default {
                 success: colors.green.accent3
             },
             light: {
-                primary: colors.blue.darken2,
+                primary: '#FFFFFF',
                 accent: colors.grey.darken3,
                 secondary: colors.amber.darken3,
                 info: colors.teal.lighten1,

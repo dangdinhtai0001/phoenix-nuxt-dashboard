@@ -1,11 +1,8 @@
-import colors from 'vuetify/es5/util/colors'
-
 import vuetify from './config/vuetify.js'
 import tailwind from './config/tailwind.js'
 
 import auth from './config/auth.js'
 import axios from './config/axios.js'
-import i18n from './config/i18n.js'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -38,6 +35,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/i18n.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -48,7 +46,7 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     //https://tailwindcss.nuxtjs.org/
-    ['@nuxtjs/tailwindcss', {tailwind}]
+    ['@nuxtjs/tailwindcss', { tailwind }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -56,19 +54,15 @@ export default {
     // https://go.nuxtjs.dev/axios
     ['@nuxtjs/axios', { axios }],
     // https://auth.nuxtjs.org/guide/setup/
-    ['@nuxtjs/auth', { auth }],
-    // https://i18n.nuxtjs.org
-    ['@nuxtjs/i18n', { i18n }]
+    ['@nuxtjs/auth', { auth }]
   ],
-
-  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
-  vuetify: vuetify,
-
-
 
   router: {
     middleware: ['auth']
   },
+
+  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+  vuetify: vuetify,
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
