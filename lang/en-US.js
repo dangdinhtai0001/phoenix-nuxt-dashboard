@@ -1,5 +1,5 @@
 export default {
     paragraph: {
-        welcome: 'Welcomee back'
+        welcome: 'Welcome back en'
     },
 }
