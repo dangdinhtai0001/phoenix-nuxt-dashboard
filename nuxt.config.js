@@ -3,6 +3,7 @@ import tailwind from './config/tailwind.js'
 
 import auth from './config/auth.js'
 import axios from './config/axios.js'
+import toast from './config/toast.js'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -35,7 +36,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/i18n.js'
+    '~/plugins/i18n.js',
+    { src: "~/plugins/vuelidate.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,10 +54,16 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    ['@nuxtjs/axios', { axios }],
+    '@nuxtjs/axios',
     // https://auth.nuxtjs.org/guide/setup/
-    ['@nuxtjs/auth', { auth }]
+    '@nuxtjs/auth',
+    //https://github.com/shakee93/vue-toasted
+    '@nuxtjs/toast'
   ],
+
+  toast: toast,
+  auth: auth,
+  axios: axios,
 
   router: {
     middleware: ['auth']

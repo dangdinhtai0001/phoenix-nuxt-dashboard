@@ -44,6 +44,10 @@
             <!-- -------------------------------- -->
             <v-form class="px-7" v-model="isValid">
               <v-text-field
+                v-model="signInForm.username"
+                :error-messages="signInUsernameErrors"
+                @input="$v.signInForm.username.$touch()"
+                @blur="$v.signInForm.username.$touch()"
                 :hint="$t('text_field.hint.login.username')"
                 :label="$t('text_field.label.login.username')"
                 class="mx-auto w-7/12"
@@ -51,6 +55,10 @@
               ></v-text-field>
 
               <v-text-field
+                v-model="signInForm.password"
+                :error-messages="signInPasswordErrors"
+                @input="$v.signInForm.password.$touch()"
+                @blur="$v.signInForm.password.$touch()"
                 :hint="$t('text_field.hint.login.password')"
                 :label="$t('text_field.label.login.password')"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -72,10 +80,20 @@
                 </div>
               </div>
               <!-- -------------------------------- -->
-              <div class="text-center mt-5">
-                <v-btn class="mx-auto w-7/12 rounded-lg">
+              <div class="text-center mt-3">
+                <v-btn
+                  class="mx-auto w-7/12 rounded-lg"
+                  @click="signIn"
+                  :loading="isLoading"
+                >
                   {{ $t("button.label.login.submit") }}
                 </v-btn>
+              </div>
+              <!-- -------------------------------- -->
+              <div class="text-center mt-5">
+                <div class="text-red-500 text-sm">
+                  {{ signInErrorMessage }}
+                </div>
               </div>
               <!-- -------------------------------- -->
             </v-form>
@@ -88,16 +106,78 @@
 </template>
 
 <script>
+import { validationMixin } from "vuelidate";
+import { required } from "vuelidate/lib/validators";
+
 export default {
   layout: "empty",
+
+  mixins: [validationMixin],
+
+  validations: {
+    signInForm: {
+      username: { required },
+      password: { required },
+    },
+  },
 
   data: () => ({
     signInForm: { username: "", password: "" },
     showPassword: false,
-    loading: false,
+    isLoading: false,
     isValid: false,
     isRememberMe: false,
+    signInErrorMessage: "",
   }),
+
+  computed: {
+    signInUsernameErrors() {
+      const errors = [];
+      if (!this.$v.signInForm.username.$dirty) return errors;
+      !this.$v.signInForm.username.required &&
+        errors.push(this.$t("notification.validate.require"));
+      return errors;
+    },
+
+    signInPasswordErrors() {
+      const errors = [];
+      if (!this.$v.signInForm.password.$dirty) return errors;
+      !this.$v.signInForm.password.required &&
+        errors.push(this.$t("notification.validate.require"));
+      return errors;
+    },
+  },
+
+  methods: {
+    async signIn() {
+      this.isLoading = true;
+      this.$v.signInForm.$touch();
+
+      const vm = this;
+
+      if (!this.$v.signInForm.$invalid) {
+        try {
+          let response = await this.$auth.loginWith("customStrategy", {
+            data: {
+              username: this.signInForm.username,
+              password: this.signInForm.password,
+            },
+          });
+
+          console.log(response.path);
+        } catch (err) {
+          if (err.response.data.message) {
+            this.$toast.error(err.response.data.message);
+            this.signInErrorMessage = err.response.data.message;
+          } else {
+            this.$toast.error(this.$t("notification.validate.has_error"));
+          }
+        }
+      }
+
+      this.isLoading = false;
+    },
+  },
 };
 </script>
 

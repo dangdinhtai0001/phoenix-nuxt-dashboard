@@ -1,4 +1,11 @@
 export default {
+    // -------------------- notification --------------------
+    notification: {
+        validate: {
+            require: "Trường thông tin này là bắt buộc",
+            has_error: "Đã có lỗi xảy ra"
+        }
+    },
     // -------------------- paragraph --------------------
     paragraph: {
         all: {
