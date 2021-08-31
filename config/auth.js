@@ -11,7 +11,7 @@ export default {
         customStrategy: {
             _scheme: "~/schemes/CustomScheme",
             token: {
-                property: "token.access_token",
+                property: "accessToken",
                 required: true,
                 maxAge: 15
             },
@@ -21,7 +21,7 @@ export default {
                 scope: "scope"
             },
             refreshToken: {
-                property: "token.refresh_token",
+                property: "refreshToken",
                 data: "refreshToken",
                 maxAge: false
             },

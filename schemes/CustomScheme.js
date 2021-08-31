@@ -47,7 +47,6 @@ export default class CustomScheme {
             const token = this.options.tokenType
                 ? this.options.tokenType + " " + result.accessToken
                 : result.accessToken;
-
             this.$auth.setToken(this.name, token);
             this._setToken(token);
         }
