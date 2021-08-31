@@ -9,16 +9,9 @@
       app
       mini-variant-width="60"
     >
-      <v-list nav>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-group :value="true" prepend-icon="mdi-account-circle">
-          </v-list-group>
+      <v-list nav class="px-1">
+        <v-list-item v-for="(item, i) in items" :key="i" router exact dense>
+          <CommonTreeMenu :item="item" />
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -129,8 +122,6 @@ export default {
       await this.$axios.$get("/menu/all").then(function (response) {
         vm.items = response;
       });
-
-      
     },
   },
 };

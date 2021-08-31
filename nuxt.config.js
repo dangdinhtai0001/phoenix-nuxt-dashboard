@@ -24,6 +24,10 @@ export default {
     ]
   },
 
+  //Starting from v2.13, Nuxt can auto import your components when used in your templates. 
+  //To activate this feature, set components: true in your configuration:
+  components: true,
+
   /*
    ** Customize the progress bar color
    */
