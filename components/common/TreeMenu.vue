@@ -29,7 +29,7 @@
     <!-- ------------------------------ sub group ------------------------------ -->
 
     <!-- ------------------------------ item ------------------------------ -->
-    <v-list-item v-if="!hasChild && !isRootMenu" link dense class="ml-3">
+    <v-list-item v-if="!hasChild && !isRootMenu" link dense :to="item.path" class="ml-3">
       <v-list-item-title>
         <div class="text-sm">
           {{ item.displayName }}
@@ -37,7 +37,7 @@
       </v-list-item-title>
 
       <v-list-item-icon>
-        <v-icon v-text="item.icon"></v-icon>
+        <v-icon small v-text="item.icon"></v-icon>
       </v-list-item-icon>
     </v-list-item>
     <!-- ------------------------------ item ------------------------------ -->
