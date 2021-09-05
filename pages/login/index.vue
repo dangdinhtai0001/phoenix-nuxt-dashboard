@@ -164,7 +164,7 @@ export default {
             },
           });
 
-          console.log(response.path);
+          await vm.loadUserInfo();
         } catch (err) {
           if (err.response.data.message) {
             this.$toast.error(err.response.data.message);
@@ -176,6 +176,15 @@ export default {
       }
 
       this.isLoading = false;
+    },
+
+    async loadUserInfo() {
+      let data;
+      await this.$axios.$get("/menu/all").then(function (response) {
+        data = response;
+      });
+
+      this.$store.commit("application/SET_APPLICATION_MENU", data);
     },
   },
 };

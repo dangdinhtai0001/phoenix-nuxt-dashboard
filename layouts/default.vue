@@ -118,10 +118,6 @@ export default {
   },
   methods: {
     setMenuItems() {
-      // const vm = this;
-      // await this.$axios.$get("/menu/all").then(function (response) {
-      //   vm.items = response;
-      // });
       this.items = this.$store.state.application.applicationMenu;
     },
   },

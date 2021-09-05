@@ -45,7 +45,8 @@ export default {
     '~/plugins/i18n.js',
     { src: "~/plugins/vuelidate.js", mode: "client" },
     { src: "~/plugins/vuedraggable.js", mode: "client" },
-    { src: "~/plugins/ag-grid.js", mode: "client" }
+    { src: "~/plugins/ag-grid.js", mode: "client" },
+    { src: "~/plugins/vuex-persistedstate.js"}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
