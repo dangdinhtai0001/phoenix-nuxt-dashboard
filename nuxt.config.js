@@ -4,6 +4,7 @@ import tailwind from './config/tailwind.js'
 import auth from './config/auth.js'
 import axios from './config/axios.js'
 import toast from './config/toast.js'
+import imagemin from './config/imagemin.js'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -35,13 +36,19 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/tailwind.css'
+    '@/assets/tailwind.css',
+    '@/assets/handsontable.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/i18n.js',
-    { src: "~/plugins/vuelidate.js", mode: "client" }
+    { src: "~/plugins/vuelidate.js", mode: "client" },
+    { src: "~/plugins/vuedraggable.js", mode: "client" },
+    { src: "~/plugins/revo-grid.js", mode: "client" },
+    { src: "~/plugins/vue-resizable.js", mode: "client" },
+    { src: "~/plugins/vue-columns-resizable.js", mode: "client" },
+    { src: "~/plugins/handsontable.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -52,7 +59,9 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
     //https://tailwindcss.nuxtjs.org/
-    ['@nuxtjs/tailwindcss', { tailwind }]
+    ['@nuxtjs/tailwindcss', { tailwind }],
+    //https://www.npmjs.com/package/@nuxtjs/imagemin
+    ['@nuxtjs/imagemin', { imagemin }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
