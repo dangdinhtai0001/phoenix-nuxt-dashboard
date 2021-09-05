@@ -36,19 +36,14 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/tailwind.css',
-    '@/assets/handsontable.css'
+    '@/assets/tailwind.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/i18n.js',
     { src: "~/plugins/vuelidate.js", mode: "client" },
-    { src: "~/plugins/vuedraggable.js", mode: "client" },
-    { src: "~/plugins/revo-grid.js", mode: "client" },
-    { src: "~/plugins/vue-resizable.js", mode: "client" },
-    { src: "~/plugins/vue-columns-resizable.js", mode: "client" },
-    { src: "~/plugins/handsontable.js", mode: "client" }
+    { src: "~/plugins/vuedraggable.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

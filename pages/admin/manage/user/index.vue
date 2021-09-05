@@ -1,16 +1,6 @@
 <template>
   <div>
-    <CommonDataGrid3
-      class="mx-3 w-full"
-      :p_headers="headers2"
-      :p_items="items"
-    />
 
-    <!-- <CommonDataGrid2
-      class="mx-3 w-full"
-      :p_headers="headers2"
-      :p_items="items"
-    /> -->
   </div>
 </template>
 
