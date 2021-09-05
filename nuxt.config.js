@@ -36,14 +36,16 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/tailwind.css'
+    '@/assets/tailwind.css',
+    '@/assets/ag-grid-theme.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/i18n.js',
     { src: "~/plugins/vuelidate.js", mode: "client" },
-    { src: "~/plugins/vuedraggable.js", mode: "client" }
+    { src: "~/plugins/vuedraggable.js", mode: "client" },
+    { src: "~/plugins/ag-grid.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -87,5 +89,8 @@ export default {
         ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
       ],
     },
+    extend(config, context) {
+      config.resolve.alias['vue'] = 'vue/dist/vue.common'
+    }
   }
 }
