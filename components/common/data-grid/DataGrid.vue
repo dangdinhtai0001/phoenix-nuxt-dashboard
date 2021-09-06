@@ -41,14 +41,10 @@
     <ag-grid-vue
       style="width: 100%; height: 500px"
       class="ag-theme-alpine"
-            :sideBar="sideBar"
+      :sideBar="sideBar"
       :columnDefs="columnDefs"
       :rowData="rowData"
-      :defaultColDef="{
-        sortable: true,
-        resizable: true,
-        filter: true,
-      }"
+      :defaultColDef="defaultColDef"
       :groupHeaders="true"
       :suppressRowClickSelection="true"
       rowSelection="multiple"
@@ -74,6 +70,10 @@
       @column-pinned-count-changed="onColumnEvent"
     >
     </ag-grid-vue>
+
+    <div>
+      <p>{{ rowCount }}</p>
+    </div>
   </div>
 </template>
 
@@ -89,6 +89,16 @@ export default {
     sideBar: true,
     rowCount: null,
   }),
+
+  computed: {
+    defaultColDef() {
+      return {
+        sortable: true,
+        resizable: true,
+        filter: true,
+      };
+    },
+  },
 
   async beforeMount() {
     this.gridOptions = {};
@@ -112,28 +122,33 @@ export default {
       return asString;
     },
 
-    // calculateRowCount() {
-    //   if (this.api && this.rowData) {
-    //     let model = this.gridOptions.api.getModel();
-    //     let totalRows = this.rowData.length;
-    //     let processedRows = model.getRowCount();
-    //     this.rowCount =
-    //       processedRows.toLocaleString() + " / " + totalRows.toLocaleString();
-    //   }
-    // },
+    calculateRowCount() {
+      if (this.api && this.rowData) {
+        console.log("model");
+        console.log(this.gridOptions.api);
+        let model = this.gridOptions.api.getModel();
+
+        let totalRows = this.rowData.length;
+        let processedRows = model.getRowCount();
+        this.rowCount =
+          processedRows.toLocaleString() + " / " + totalRows.toLocaleString();
+
+        console.log(this.rowCount);
+      }
+    },
 
     onModelUpdated() {
       console.log("onModelUpdated");
-      // this.calculateRowCount();
+      this.calculateRowCount();
     },
 
     onReady(params) {
       console.log("onReady");
 
-      // this.api = params.api;
-      //this.calculateRowCount();
+      this.api = params.api;
+      this.calculateRowCount();
 
-      // this.api.sizeColumnsToFit();
+      this.api.sizeColumnsToFit();
     },
 
     onCellClicked(event) {
