@@ -1,83 +1,38 @@
 <template>
   <div>
-    <!-- <ag-grid-vue
-      style="width: 100%; height=500px;"
-      class="ag-theme-alpine"
-      :gridOptions="gridOptions"
-      :columnDefs="columnDefs"
-      :rowData="rowData"
-      :sideBar="sideBar"
-      :defaultColDef="{
-        sortable: true,
-        resizable: true,
-        filter: true,
-      }"
-      :groupHeaders="true"
-      :suppressRowClickSelection="true"
-      rowSelection="multiple"
-      @grid-ready="onReady"
-      @model-updated="onModelUpdated"
-      @cell-clicked="onCellClicked"
-      @cell-double-clicked="onCellDoubleClicked"
-      @cell-context-menu="onCellContextMenu"
-      @cell-value-changed="onCellValueChanged"
-      @cell-focused="onCellFocused"
-      @row-selected="onRowSelected"
-      @selection-changed="onSelectionChanged"
-      @filter-modified="onFilterModified"
-      @virtual-row-removed="onVirtualRowRemoved"
-      @row-clicked="onRowClicked"
-      @column-everything-changed="onColumnEvent"
-      @column-row-group-changed="onColumnEvent"
-      @column-value-Changed="onColumnEvent"
-      @column-moved="onColumnEvent"
-      @column-visible="onColumnEvent"
-      @column-group-Opened="onColumnEvent"
-      @column-resized="onColumnEvent"
-      @column-pinned-count-changed="onColumnEvent"
-    >
-    </ag-grid-vue> -->
-
-    <ag-grid-vue
-      style="width: 100%; height: 500px"
-      class="ag-theme-alpine"
-      :sideBar="sideBar"
-      :columnDefs="columnDefs"
-      :rowData="rowData"
-      :defaultColDef="defaultColDef"
-      :groupHeaders="true"
-      :suppressRowClickSelection="true"
-      rowSelection="multiple"
-      @grid-ready="onReady"
-      @model-updated="onModelUpdated"
-      @cell-clicked="onCellClicked"
-      @cell-double-clicked="onCellDoubleClicked"
-      @cell-context-menu="onCellContextMenu"
-      @cell-value-changed="onCellValueChanged"
-      @cell-focused="onCellFocused"
-      @row-selected="onRowSelected"
-      @selection-changed="onSelectionChanged"
-      @filter-modified="onFilterModified"
-      @virtual-row-removed="onVirtualRowRemoved"
-      @row-clicked="onRowClicked"
-      @column-everything-changed="onColumnEvent"
-      @column-row-group-changed="onColumnEvent"
-      @column-value-Changed="onColumnEvent"
-      @column-moved="onColumnEvent"
-      @column-visible="onColumnEvent"
-      @column-group-Opened="onColumnEvent"
-      @column-resized="onColumnEvent"
-      @column-pinned-count-changed="onColumnEvent"
-    >
-    </ag-grid-vue>
-
-    <div>
-      <p>{{ rowCount }}</p>
+    <div style="height: 500px">
+      <ag-grid-vue
+        style="width: 100%; height: 100%"
+        class="ag-theme-alpine"
+        :columnDefs="columnDefs"
+        :rowData="rowData"
+        @grid-ready="onReady"
+        :frameworkComponents="frameworkComponents"
+        :defaultColDef="defaultColDef"
+        :columnTypes="columnTypes"
+        :paginationPageSize="paginationPageSize"
+        :rowSelection="rowSelection"
+        :suppressMenuHide="true"
+        :rowDragManaged="false"
+        :animateRows="true"
+        :pagination="true"
+      ></ag-grid-vue>
     </div>
+
+    <v-text-field
+      @change="onPageSizeChanged"
+      v-model="paginationPageSize"
+      class="w-20"
+      type="number"
+      label="Number"
+    ></v-text-field>
   </div>
 </template>
 
 <script>
+import DefaultHeader from "~/components/common/data-grid/DefaultHeader.vue";
+import DefaultHeaderGroup from "~/components/common/data-grid/DefaultHeaderGroup.vue";
+
 export default {
   props: { fetchColumnDef: Function, fetchRowData: Function },
   data: () => ({
@@ -85,26 +40,80 @@ export default {
     api: null,
     columnDefs: null,
     rowData: null,
-    showGrid: false,
-    sideBar: true,
-    rowCount: null,
+    rowSelection: null,
+    paginationPageSize: null,
+    paginationNumberFormatter: null,
   }),
+
+  components: {
+    agColumnHeader: DefaultHeader,
+    customHeaderGroupComponent: DefaultHeaderGroup,
+  },
 
   computed: {
     defaultColDef() {
       return {
+        editable: false,
         sortable: true,
-        resizable: true,
+        flex: 1,
+        minWidth: 100,
         filter: true,
+        resizable: true,
+        headerComponentParams: { menuIcon: "fa-bars" },
+        filter: "agTextColumnFilter",
+      };
+    },
+
+    frameworkComponents() {
+      return { agColumnHeader: "agColumnHeader" };
+    },
+
+    columnTypes() {
+      return {
+        numberColumn: {
+          width: 130,
+          filter: "agNumberColumnFilter",
+        },
+        medalColumn: {
+          width: 100,
+          columnGroupShow: "open",
+          filter: false,
+        },
+        nonEditableColumn: { editable: false },
+        dateColumn: {
+          filter: "agDateColumnFilter",
+          filterParams: {
+            comparator: (filterLocalDateAtMidnight, cellValue) => {
+              var dateParts = cellValue.split("/");
+              var day = Number(dateParts[0]);
+              var month = Number(dateParts[1]) - 1;
+              var year = Number(dateParts[2]);
+              var cellDate = new Date(year, month, day);
+              if (cellDate < filterLocalDateAtMidnight) {
+                return -1;
+              } else if (cellDate > filterLocalDateAtMidnight) {
+                return 1;
+              } else {
+                return 0;
+              }
+            },
+          },
+        },
       };
     },
   },
 
   async beforeMount() {
     this.gridOptions = {};
+
     await this.createColumnDefs();
     await this.createRowData();
-    this.showGrid = true;
+
+    this.rowSelection = "multiple";
+
+    this.paginationPageSize = 30;
+
+    this.api.paginationSetPageSize(this.paginationPageSize);
   },
 
   methods: {
@@ -116,106 +125,22 @@ export default {
       this.rowData = await this.fetchRowData();
     },
 
-    pad(num, totalStringSize) {
-      let asString = num + "";
-      while (asString.length < totalStringSize) asString = "0" + asString;
-      return asString;
-    },
-
-    calculateRowCount() {
-      if (this.api && this.rowData) {
-        console.log("model");
-        console.log(this.gridOptions.api);
-        let model = this.gridOptions.api.getModel();
-
-        let totalRows = this.rowData.length;
-        let processedRows = model.getRowCount();
-        this.rowCount =
-          processedRows.toLocaleString() + " / " + totalRows.toLocaleString();
-
-        console.log(this.rowCount);
-      }
-    },
-
-    onModelUpdated() {
-      console.log("onModelUpdated");
-      this.calculateRowCount();
-    },
-
     onReady(params) {
       console.log("onReady");
 
       this.api = params.api;
-      this.calculateRowCount();
-
       this.api.sizeColumnsToFit();
+
+      this.api.paginationSetPageSize(this.paginationPageSize);
     },
 
-    onCellClicked(event) {
-      console.log(
-        "onCellClicked: " + event.rowIndex + " " + event.colDef.field
-      );
-    },
-
-    onCellValueChanged(event) {
-      console.log(
-        "onCellValueChanged: " + event.oldValue + " to " + event.newValue
-      );
-    },
-
-    onCellDoubleClicked(event) {
-      console.log(
-        "onCellDoubleClicked: " + event.rowIndex + " " + event.colDef.field
-      );
-    },
-
-    onCellContextMenu(event) {
-      console.log(
-        "onCellContextMenu: " + event.rowIndex + " " + event.colDef.field
-      );
-    },
-
-    onCellFocused(event) {
-      console.log(
-        "onCellFocused: (" + event.rowIndex + "," + event.colIndex + ")"
-      );
-    },
-
-    // taking out, as when we 'select all', it prints to much to the console!!
-    // eslint-disable-next-line
-    onRowSelected(event) {
-      // console.log('onRowSelected: ' + event.node.data.name);
-    },
-
-    onSelectionChanged() {
-      console.log("selectionChanged");
-    },
-
-    onFilterModified() {
-      console.log("onFilterModified");
-    },
-
-    // eslint-disable-next-line
-    onVirtualRowRemoved(event) {
-      // because this event gets fired LOTS of times, we don't print it to the
-      // console. if you want to see it, just uncomment out this line
-      // console.log('onVirtualRowRemoved: ' + event.rowIndex);
-    },
-
-    onRowClicked(event) {
-      console.log("onRowClicked: " + event.node.data.name);
-    },
-
-    onQuickFilterChanged(event) {
-      // this.gridOptions.api.setQuickFilter(event.target.value);
-    },
-
-    // here we use one generic event to handle all the column type events.
-    // the method just prints the event name
-    onColumnEvent(event) {
-      console.log("onColumnEvent: " + event);
+    onPageSizeChanged() {
+      this.api.paginationSetPageSize(this.paginationPageSize);
     },
   },
 };
 </script>
+
+
+
 
