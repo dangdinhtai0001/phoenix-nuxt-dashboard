@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div style="height: 500px">
+    <div class="default-grid-size">
       <ag-grid-vue
-        style="width: 100%; height: 100%"
-        class="ag-theme-alpine"
+        class="ag-theme-alpine default-grid-size"
         :columnDefs="columnDefs"
         :rowData="rowData"
         @grid-ready="onReady"
@@ -11,7 +10,7 @@
         :defaultColDef="defaultColDef"
         :columnTypes="columnTypes"
         :paginationPageSize="paginationPageSize"
-        :rowSelection="rowSelection"
+        rowSelection="multiple"
         :suppressMenuHide="true"
         :rowDragManaged="false"
         :animateRows="true"
@@ -34,13 +33,15 @@ import DefaultHeader from "~/components/common/data-grid/DefaultHeader.vue";
 import DefaultHeaderGroup from "~/components/common/data-grid/DefaultHeaderGroup.vue";
 
 export default {
-  props: { fetchColumnDef: Function, fetchRowData: Function },
+  props: {
+    fetchColumnDef: Function,
+    fetchRowData: Function,
+  },
   data: () => ({
     gridOptions: null,
-    api: null,
     columnDefs: null,
     rowData: null,
-    rowSelection: null,
+    api: null,
     paginationPageSize: null,
     paginationNumberFormatter: null,
   }),
@@ -106,10 +107,9 @@ export default {
   async beforeMount() {
     this.gridOptions = {};
 
+    // fetch grid def from api
     await this.createColumnDefs();
     await this.createRowData();
-
-    this.rowSelection = "multiple";
 
     this.paginationPageSize = 30;
 
@@ -117,6 +117,7 @@ export default {
   },
 
   methods: {
+    // fetch grid def from api
     async createColumnDefs() {
       this.columnDefs = await this.fetchColumnDef();
     },
@@ -125,6 +126,7 @@ export default {
       this.rowData = await this.fetchRowData();
     },
 
+    // fetch grid def from api
     onReady(params) {
       console.log("onReady");
 
@@ -140,6 +142,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.default-grid-size {
+  width: 100%;
+  height: 80vh;
+}
+</style>
 
 
 

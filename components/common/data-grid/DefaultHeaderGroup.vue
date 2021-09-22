@@ -1,6 +1,6 @@
 <template>
   <div class="ag-header-group-cell-label">
-    <div class="customHeaderLabel mx-1">{{ params.displayName }}</div>
+    <div class="text-base font-bold truncate  capitalize mx-1">{{ params.displayName }}</div>
     <div
       class="customExpandButton"
       :class="{ expanded: groupExpanded, collapsed: !groupExpanded }"
@@ -50,16 +50,16 @@ customExpandButton {
 
 .expanded {
   animation-name: toExpanded;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   -ms-transform: rotate(180deg); /* IE 9 */
   -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
   transform: rotate(180deg);
 }
 
 .collapsed {
-  color: cornflowerblue;
+  color: black;
   animation-name: toCollapsed;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   -ms-transform: rotate(0deg); /* IE 9 */
   -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
   transform: rotate(0deg);
@@ -90,12 +90,12 @@ customExpandButton {
 }
 
 .active {
-  color: cornflowerblue;
+  color: black;
 }
 
 @keyframes toExpanded {
   from {
-    color: cornflowerblue;
+    color: black;
     -ms-transform: rotate(0deg); /* IE 9 */
     -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
     transform: rotate(0deg);
@@ -116,7 +116,7 @@ customExpandButton {
     transform: rotate(180deg);
   }
   to {
-    color: cornflowerblue;
+    color: black;
     -ms-transform: rotate(0deg); /* IE 9 */
     -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
     transform: rotate(0deg);
