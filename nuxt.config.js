@@ -38,7 +38,8 @@ export default {
   css: [
     '@/assets/tailwind.css',
     '@/assets/ag-grid-theme.css',
-    '@/assets/icon.css'
+    '@/assets/icon.css',
+    '@/assets/perfect-scrollbar.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -47,7 +48,8 @@ export default {
     { src: "~/plugins/vuelidate.js", mode: "client" },
     { src: "~/plugins/vuedraggable.js", mode: "client" },
     { src: "~/plugins/ag-grid.js", mode: "client" },
-    { src: "~/plugins/vuex-persistedstate.js"}
+    { src: "~/plugins/vuex-persistedstate.js"},
+    { src: "~/plugins/perfect-scrollbar.js", mode: "client" }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

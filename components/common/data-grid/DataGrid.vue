@@ -48,7 +48,7 @@ export default {
 
   components: {
     agColumnHeader: DefaultHeader,
-    customHeaderGroupComponent: DefaultHeaderGroup,
+    defaultHeaderGroup: DefaultHeaderGroup,
   },
 
   computed: {
@@ -134,6 +134,7 @@ export default {
       this.api.sizeColumnsToFit();
 
       this.api.paginationSetPageSize(this.paginationPageSize);
+
     },
 
     onPageSizeChanged() {

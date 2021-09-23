@@ -1,31 +1,27 @@
 <template>
-  <div>
-    <v-row>
-      <div v-if="params.enableMenu" ref="menuButton">
-        <v-btn icon color="black" small @click="onMenuClicked($event)">
-          <v-icon x-small> fa {{ params.menuIcon }} </v-icon>
-        </v-btn>
-      </div>
-      <div class="text-base truncate font-bold capitalize mx-1">
-        {{ params.displayName }}
-      </div>
+  <div class="flex flex-row">
+    <div v-if="params.enableMenu" ref="menuButton" class="flex-none">
+      <v-btn icon color="black" small @click="onMenuClicked($event)">
+        <v-icon x-small> fa {{ params.menuIcon }} </v-icon>
+      </v-btn>
+    </div>
+    <div class="text-base truncate font-bold capitalize flex-grow mx-1">
+      {{ params.displayName }}
+    </div>
 
-      <div v-if="params.enableSorting">
-        <v-btn icon color="black" small @click="onSortRequested($event)">
-          <v-icon v-if="noSort == 'active'" x-small class="angry-animate">
-            fa fa-times
-          </v-icon>
-          <v-icon v-if="ascSort == 'active'" x-small class="angry-animate">
-            fa fa-long-arrow-alt-down
-          </v-icon>
-          <v-icon v-if="descSort == 'active'" x-small class="angry-animate">
-            fa fa-long-arrow-alt-up
-          </v-icon>
-        </v-btn>
-      </div>
-
-      <!-- <v-spacer /> -->
-    </v-row>
+    <div v-if="params.enableSorting" class="flex-none">
+      <v-btn icon color="black" small @click="onSortRequested($event)">
+        <v-icon v-if="noSort == 'active'" x-small class="angry-animate">
+          fa fa-times
+        </v-icon>
+        <v-icon v-if="ascSort == 'active'" x-small class="angry-animate">
+          fa fa-long-arrow-alt-down
+        </v-icon>
+        <v-icon v-if="descSort == 'active'" x-small class="angry-animate">
+          fa fa-long-arrow-alt-up
+        </v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
