@@ -5,7 +5,7 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      fixed
+      :fixed="true"
       app
       mini-variant-width="60"
     >
@@ -71,7 +71,7 @@
     </v-navigation-drawer>
     <!-- -------------------------- right drawer -------------------------- -->
 
-    <v-footer :absolute="!fixed" app>
+    <v-footer :absolute="false" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
