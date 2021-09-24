@@ -20,6 +20,21 @@
       ></ag-grid-vue>
     </div>
 
+    <div class="flex items-center">
+      <div class="mx-auto mt-1 w-2/6">
+        <v-pagination
+          v-model="paginationOptions.page"
+          :length="paginationOptions.length"
+          circle
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          @next="go2NextPage()"
+          @previous="go2PreviousPage()"
+          @input="changePage($event)"
+        ></v-pagination>
+      </div>
+    </div>
+
     <v-text-field
       @change="onPageSizeChanged"
       v-model="paginationPageSize"
@@ -48,6 +63,7 @@ export default {
     api: null,
     paginationPageSize: null,
     paginationNumberFormatter: null,
+    paginationOptions: {},
   }),
 
   components: {
@@ -118,6 +134,7 @@ export default {
     this.paginationPageSize = 30;
 
     this.api.paginationSetPageSize(this.paginationPageSize);
+    this.initPaginationOption();
   },
 
   methods: {
@@ -139,14 +156,14 @@ export default {
 
       this.api.paginationSetPageSize(this.paginationPageSize);
 
-      this.addPerfectScrollBar();
+      this.initPerfectScrollBar();
     },
 
     onPageSizeChanged() {
       this.api.paginationSetPageSize(this.paginationPageSize);
     },
 
-    addPerfectScrollBar() {
+    initPerfectScrollBar() {
       const defaultOptions = {
         wheelSpeed: 1,
         wheelPropagation: true,
@@ -189,6 +206,26 @@ export default {
         );
         ps.update();
       }
+    },
+
+    initPaginationOption() {
+      this.paginationOptions = {
+        page: 0,
+        length: 100,
+      };
+    },
+
+    go2NextPage() {
+      this.api.paginationGoToNextPage();
+    },
+
+    go2PreviousPage() {
+      this.api.paginationGoToPreviousPage();
+    },
+
+    changePage(event) {
+      console.log(event);
+      this.api.paginationGoToPage(event);
     },
   },
 };

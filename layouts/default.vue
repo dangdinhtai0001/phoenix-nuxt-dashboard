@@ -1,85 +1,83 @@
 <template>
   <v-app dark>
-    <perfect-scrollbar>
-      <!-- -------------------------- left drawer -------------------------- -->
-      <v-navigation-drawer
-        v-model="drawer"
-        :mini-variant="miniVariant"
-        :clipped="clipped"
-        :fixed="true"
-        app
-        mini-variant-width="60"
-      >
-        <v-list nav class="px-1">
-          <v-list-item v-for="(item, i) in items" :key="i" router exact dense>
-            <CommonTreeMenu :item="item" />
-          </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <!-- -------------------------- left drawer -------------------------- -->
-      <!-- -------------------------- app bar -------------------------- -->
-      <v-app-bar :clipped-left="clipped" fixed app>
-        <!-- -------------------------- application name -------------------------- -->
-        <div class="w-60 px-2">
-          <div class="flex flex-row">
-            <div>
-              <v-avatar size="30" class="border-2 border-opacity-10">
-                <img src="/logo/logo.png" alt="logo" />
-              </v-avatar>
-            </div>
-            <div
-              class="text-lg text-uppercase text-center white--text mx-2 mt-1"
-            >
-              {{ profile.title }}
-            </div>
+    <!-- -------------------------- left drawer -------------------------- -->
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="miniVariant"
+      :clipped="clipped"
+      :fixed="true"
+      app
+      mini-variant-width="60"
+    >
+      <v-list nav class="px-1">
+        <v-list-item v-for="(item, i) in items" :key="i" router exact dense>
+          <CommonTreeMenu :item="item" />
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <!-- -------------------------- left drawer -------------------------- -->
+    <!-- -------------------------- app bar -------------------------- -->
+    <v-app-bar :clipped-left="clipped" fixed app>
+      <!-- -------------------------- application name -------------------------- -->
+      <div class="w-60 px-2">
+        <div class="flex flex-row">
+          <div>
+            <v-avatar size="30" class="border-2 border-opacity-10">
+              <img src="/logo/logo.png" alt="logo" />
+            </v-avatar>
+          </div>
+          <div class="text-lg text-uppercase text-center white--text mx-2 mt-1">
+            {{ profile.title }}
           </div>
         </div>
-        <!-- -------------------------- application name -------------------------- -->
-        <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
-        <v-btn icon @click.stop="miniVariant = !miniVariant">
-          <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
-        </v-btn>
-        <!-- <v-btn icon @click.stop="clipped = !clipped">
+      </div>
+      <!-- -------------------------- application name -------------------------- -->
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
+      <v-btn icon @click.stop="miniVariant = !miniVariant">
+        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+      </v-btn>
+      <!-- <v-btn icon @click.stop="clipped = !clipped">
         <v-icon>mdi-application</v-icon>
       </v-btn> -->
-        <!-- <v-btn icon @click.stop="fixed = !fixed">
+      <!-- <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
-        <!-- <v-toolbar-title v-text="title" /> -->
-        <v-spacer />
-        <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
-      </v-app-bar>
-      <!-- -------------------------- app bar -------------------------- -->
+      <!-- <v-toolbar-title v-text="title" /> -->
+      <v-spacer />
+      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <!-- -------------------------- app bar -------------------------- -->
 
-      <!-- -------------------------- main -------------------------- -->
+    <!-- -------------------------- main -------------------------- -->
+    <perfect-scrollbar>
       <v-main>
-        <v-container>
+        <v-container fluid>
           <nuxt />
         </v-container>
       </v-main>
-      <!-- -------------------------- main -------------------------- -->
-
-      <!-- -------------------------- right drawer -------------------------- -->
-      <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-        <v-list>
-          <v-list-item @click.native="right = !right">
-            <v-list-item-action>
-              <v-icon light> mdi-repeat </v-icon>
-            </v-list-item-action>
-            <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <!-- -------------------------- right drawer -------------------------- -->
-
-      <!-- -------------------------- footer -------------------------- -->
-      <v-footer :absolute="false" app>
-        <span>&copy; {{ new Date().getFullYear() }}</span>
-      </v-footer>
-      <!-- -------------------------- footer -------------------------- -->
     </perfect-scrollbar>
+    <!-- -------------------------- main -------------------------- -->
+
+    <!-- -------------------------- right drawer -------------------------- -->
+    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
+      <v-list>
+        <v-list-item @click.native="right = !right">
+          <v-list-item-action>
+            <v-icon light> mdi-repeat </v-icon>
+          </v-list-item-action>
+          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <!-- -------------------------- right drawer -------------------------- -->
+
+    <!-- -------------------------- footer -------------------------- -->
+    <v-footer :absolute="false" app>
+      <span>&copy; {{ new Date().getFullYear() }}</span>
+    </v-footer>
+    <!-- -------------------------- footer -------------------------- -->
   </v-app>
 </template>
 
@@ -131,7 +129,21 @@ export default {
 </script>
 
 <style scoped>
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+  overflow: hidden;
+}
+
+/* Hide scrollbar for IE, Edge add Firefox */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+  overflow: hidden;
+}
+
 .ps {
   height: 100vh;
 }
 </style>
+
