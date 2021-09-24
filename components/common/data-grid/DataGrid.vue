@@ -2,6 +2,7 @@
   <div>
     <div class="default-grid-size">
       <ag-grid-vue
+        id="main-grid"
         class="ag-theme-alpine default-grid-size"
         :columnDefs="columnDefs"
         :rowData="rowData"
@@ -15,6 +16,7 @@
         :rowDragManaged="false"
         :animateRows="true"
         :pagination="true"
+        :suppressHorizontalScroll="false"
       ></ag-grid-vue>
     </div>
 
@@ -31,6 +33,8 @@
 <script>
 import DefaultHeader from "~/components/common/data-grid/DefaultHeader.vue";
 import DefaultHeaderGroup from "~/components/common/data-grid/DefaultHeaderGroup.vue";
+
+import PerfectScrollbar from "perfect-scrollbar";
 
 export default {
   props: {
@@ -135,10 +139,56 @@ export default {
 
       this.api.paginationSetPageSize(this.paginationPageSize);
 
+      this.addPerfectScrollBar();
     },
 
     onPageSizeChanged() {
       this.api.paginationSetPageSize(this.paginationPageSize);
+    },
+
+    addPerfectScrollBar() {
+      const defaultOptions = {
+        wheelSpeed: 1,
+        wheelPropagation: true,
+        minScrollbarLength: 20,
+        // suppressScrollX: true,
+      };
+      const gridBodyViewPort = document.querySelector(
+        "#main-grid .ag-body-viewport"
+      );
+
+      const gridHorizontalScrollViewPort = document.querySelector(
+        "#main-grid .ag-body-horizontal-scroll-viewport"
+      );
+
+      const gridHorizontalLeftViewPort = document.querySelector(
+        "#main-grid .ag-horizontal-left-spacer"
+      );
+
+      if (gridBodyViewPort) {
+        const ps = new PerfectScrollbar(gridBodyViewPort, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20,
+          suppressScrollX: true,
+        });
+        ps.update();
+      }
+
+      if (gridHorizontalScrollViewPort) {
+        const ps = new PerfectScrollbar(
+          gridHorizontalScrollViewPort,
+          defaultOptions
+        );
+        ps.update();
+      }
+      if (gridHorizontalLeftViewPort) {
+        const ps = new PerfectScrollbar(
+          gridHorizontalLeftViewPort,
+          defaultOptions
+        );
+        ps.update();
+      }
     },
   },
 };
