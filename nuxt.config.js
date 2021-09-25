@@ -21,7 +21,10 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap'
+      }
     ]
   },
 
@@ -36,6 +39,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '@/assets/global.css',
     '@/assets/tailwind.css',
     '@/assets/ag-grid-theme.css',
     '@/assets/icon.css',
@@ -48,7 +52,7 @@ export default {
     { src: "~/plugins/vuelidate.js", mode: "client" },
     { src: "~/plugins/vuedraggable.js", mode: "client" },
     { src: "~/plugins/ag-grid.js", mode: "client" },
-    { src: "~/plugins/vuex-persistedstate.js"},
+    { src: "~/plugins/vuex-persistedstate.js" },
     { src: "~/plugins/perfect-scrollbar.js", mode: "client" }
   ],
 

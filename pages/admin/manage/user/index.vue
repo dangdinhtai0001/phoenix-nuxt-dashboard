@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="text-6xl">Welcome</h1>
     <CommonDataGrid
       :fetchColumnDef="fetchColumnDef"
       :fetchRowData="fetchRowData"
