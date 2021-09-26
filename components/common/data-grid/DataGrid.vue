@@ -26,6 +26,7 @@
           v-model="paginationOptions.page"
           :length="paginationOptions.length"
           circle
+          color="secondary"
           prev-icon="mdi-menu-left"
           next-icon="mdi-menu-right"
           @next="go2NextPage()"
@@ -158,11 +159,9 @@ export default {
 
       this.initPerfectScrollBar();
     },
-
     onPageSizeChanged() {
       this.api.paginationSetPageSize(this.paginationPageSize);
     },
-
     initPerfectScrollBar() {
       const defaultOptions = {
         wheelSpeed: 1,
@@ -207,24 +206,19 @@ export default {
         ps.update();
       }
     },
-
     initPaginationOption() {
       this.paginationOptions = {
         page: 0,
         length: 100,
       };
     },
-
     go2NextPage() {
       this.api.paginationGoToNextPage();
     },
-
     go2PreviousPage() {
       this.api.paginationGoToPreviousPage();
     },
-
     changePage(event) {
-      console.log(event);
       this.api.paginationGoToPage(event);
     },
   },

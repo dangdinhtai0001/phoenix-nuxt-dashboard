@@ -1,9 +1,79 @@
 <template>
   <div class="flex flex-row">
     <div v-if="params.enableMenu" ref="menuButton" class="flex-none">
-      <v-btn icon color="black" small @click="onMenuClicked($event)">
-        <v-icon x-small> fa {{ params.menuIcon }} </v-icon>
-      </v-btn>
+      <v-menu
+        transition="slide-y-transition"
+        :close-on-content-click="false"
+        offset-y
+        bottom
+        right
+        class="pa-0 ma-0"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            color="black"
+            v-bind="attrs"
+            v-on="on"
+            small
+            @click="onMenuClicked($event)"
+          >
+            <v-icon x-small> fa {{ params.menuIcon }} </v-icon>
+          </v-btn>
+        </template>
+
+        <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
+        <v-card flat tile>
+          <v-item-group v-model="tab" class="text-center" mandatory>
+            <v-item v-slot="{ active, toggle }">
+              <v-btn
+                :input-value="active"
+                icon
+                @click="toggle"
+                tile
+                flat
+                active-class="secondary"
+              >
+                <v-icon x-small>mdi-menu</v-icon>
+              </v-btn>
+            </v-item>
+            <v-item v-slot="{ active, toggle }">
+              <v-btn
+                :input-value="active"
+                icon
+                tile
+                flat
+                active-class="secondary"
+                @click="toggle"
+              >
+                <v-icon x-small>mdi-filter</v-icon>
+              </v-btn>
+            </v-item>
+            <v-item v-slot="{ active, toggle }">
+              <v-btn
+                :input-value="active"
+                icon
+                tile
+                flat
+                active-class="secondary"
+                @click="toggle"
+              >
+                <v-icon x-small>mdi-view-column</v-icon>
+              </v-btn>
+            </v-item>
+          </v-item-group>
+
+          <v-window v-model="tab">
+            <v-window-item>
+              <v-card color="transparent">menu</v-card>
+            </v-window-item>
+            <v-window-item>
+              <v-card color="transparent">filter</v-card>
+            </v-window-item>
+          </v-window>
+        </v-card>
+        <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
+      </v-menu>
     </div>
     <div class="text-base truncate font-bold capitalize flex-grow mx-1">
       {{ params.displayName }}
@@ -31,6 +101,7 @@ export default {
     ascSort: null,
     descSort: null,
     noSort: null,
+    tab: null,
   }),
 
   beforeMount() {},
@@ -40,10 +111,8 @@ export default {
   },
   methods: {
     onMenuClicked() {
-      console.log(
-        this.params.columnApi.getAllDisplayedColumnGroups()[1].getGroupId()
-      );
-      this.params.showColumnMenu(this.$refs.menuButton);
+      console.log(this.params.columnApi.getAllDisplayedColumns());
+      // this.params.showColumnMenu(this.$refs.menuButton);
     },
 
     onSortChanged() {
