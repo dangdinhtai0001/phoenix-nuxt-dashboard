@@ -23,42 +23,22 @@
         </template>
 
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
-        <v-card flat tile>
+        <v-card text tile>
           <v-item-group v-model="tab" class="text-center" mandatory>
-            <v-item v-slot="{ active, toggle }">
+            <v-item
+              v-for="(item, i) in menuItem"
+              :key="i"
+              v-slot="{ active, toggle }"
+            >
               <v-btn
                 :input-value="active"
                 icon
                 @click="toggle"
                 tile
-                flat
+                text
                 active-class="secondary"
               >
-                <v-icon x-small>mdi-menu</v-icon>
-              </v-btn>
-            </v-item>
-            <v-item v-slot="{ active, toggle }">
-              <v-btn
-                :input-value="active"
-                icon
-                tile
-                flat
-                active-class="secondary"
-                @click="toggle"
-              >
-                <v-icon x-small>mdi-filter</v-icon>
-              </v-btn>
-            </v-item>
-            <v-item v-slot="{ active, toggle }">
-              <v-btn
-                :input-value="active"
-                icon
-                tile
-                flat
-                active-class="secondary"
-                @click="toggle"
-              >
-                <v-icon x-small>mdi-view-column</v-icon>
+                <v-icon x-small>{{ item.icon }}</v-icon>
               </v-btn>
             </v-item>
           </v-item-group>
@@ -69,6 +49,16 @@
             </v-window-item>
             <v-window-item>
               <v-card color="transparent">filter</v-card>
+            </v-window-item>
+            <v-window-item>
+              <v-card color="transparent"
+                >columns
+                <v-treeview
+                  selectable
+                  selected-color="red"
+                  :items="getColumnTree()"
+                ></v-treeview>
+              </v-card>
             </v-window-item>
           </v-window>
         </v-card>
@@ -109,9 +99,19 @@ export default {
     this.params.column.addEventListener("sortChanged", this.onSortChanged);
     this.onSortChanged();
   },
+
+  computed: {
+    menuItem() {
+      return [
+        { icon: "mdi-menu" },
+        { icon: "mdi-filter" },
+        { icon: "mdi-view-column" },
+      ];
+    },
+  },
   methods: {
     onMenuClicked() {
-      console.log(this.params.columnApi.getAllDisplayedColumns());
+      console.log(this.params.columnApi.getAllColumns());
       // this.params.showColumnMenu(this.$refs.menuButton);
     },
 
@@ -137,7 +137,8 @@ export default {
       }
     },
 
-    getListDisplayColumns() {},
+    getColumnTree() {
+    },
   },
 };
 </script>
