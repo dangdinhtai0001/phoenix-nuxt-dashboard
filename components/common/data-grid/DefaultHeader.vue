@@ -23,43 +23,70 @@
         </template>
 
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
-        <v-card text tile>
-          <v-item-group v-model="tab" class="text-center" mandatory>
-            <v-item
-              v-for="(item, i) in menuItem"
-              :key="i"
-              v-slot="{ active, toggle }"
-            >
-              <v-btn
-                :input-value="active"
-                icon
-                @click="toggle"
-                tile
-                text
-                active-class="secondary"
+        <v-card text tile width="200px">
+          <v-item-group v-model="menuTab" class="text-center" mandatory>
+            <div class="flex flex-row">
+              <v-item
+                v-for="(item, i) in menuItem"
+                :key="i"
+                v-slot="{ active, toggle }"
               >
-                <v-icon x-small>{{ item.icon }}</v-icon>
-              </v-btn>
-            </v-item>
+                <div class="flex-grow">
+                  <v-btn
+                    :input-value="active"
+                    icon
+                    @click="toggle"
+                    tile
+                    active-class="secondary"
+                    block
+                  >
+                    <v-icon x-small>{{ item.icon }}</v-icon>
+                  </v-btn>
+                </div>
+              </v-item>
+            </div>
           </v-item-group>
 
-          <v-window v-model="tab">
-            <v-window-item>
-              <v-card color="transparent">menu</v-card>
-            </v-window-item>
-            <v-window-item>
-              <v-card color="transparent">filter</v-card>
-            </v-window-item>
-            <v-window-item>
-              <v-card color="transparent"
-                >columns
-                <v-treeview
-                  selectable
-                  selected-color="red"
-                  :items="getColumnTree()"
-                ></v-treeview>
-              </v-card>
-            </v-window-item>
+          <v-window v-model="menuTab" class="pb-1">
+            <perfect-scrollbar>
+              <v-window-item>
+                <v-card color="transparent">menu</v-card>
+              </v-window-item>
+              <v-window-item>
+                <v-card color="transparent">filter</v-card>
+              </v-window-item>
+              <v-window-item>
+                <v-card color="transparent">
+                  <v-text-field
+                    v-model="columnSearch"
+                    label="Tìm..."
+                    placeholder="Tên cột"
+                    outlined
+                    hide-details
+                    dense
+                    clearable
+                    clear-icon="mdi-close-circle-outline"
+                    class="mb-0 pb-0 mt-2 px-2"
+                  ></v-text-field>
+                  <v-treeview
+                    v-model="displayColumns"
+                    item-key="id"
+                    @input="updateMenuColumn($event)"
+                    dense
+                    open-all
+                    open-on-click
+                    selectable
+                    selected-color="primary"
+                    :items="allColumns"
+                    :search="columnSearch"
+                  >
+                    <template v-slot:label="{ item }">
+                      <div class="text-xs">{{ item.name }}</div>
+                    </template>
+                  </v-treeview>
+                </v-card>
+              </v-window-item>
+            </perfect-scrollbar>
           </v-window>
         </v-card>
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
@@ -69,6 +96,7 @@
       {{ params.displayName }}
     </div>
 
+    <!-- -------------------------------------------------- sort  -------------------------------------------------- -->
     <div v-if="params.enableSorting" class="flex-none">
       <v-btn icon color="black" small @click="onSortRequested($event)">
         <v-icon v-if="noSort == 'active'" x-small class="angry-animate">
@@ -82,6 +110,7 @@
         </v-icon>
       </v-btn>
     </div>
+    <!-- -------------------------------------------------- sort  -------------------------------------------------- -->
   </div>
 </template>
 
@@ -91,13 +120,19 @@ export default {
     ascSort: null,
     descSort: null,
     noSort: null,
-    tab: null,
+    menuTab: null,
+    columnSearch: "",
+    displayColumns: [],
+    allColumns: [],
   }),
 
   beforeMount() {},
   mounted() {
     this.params.column.addEventListener("sortChanged", this.onSortChanged);
     this.onSortChanged();
+
+    this.initAllColumns();
+    this.updateDisplayColumn();
   },
 
   computed: {
@@ -111,7 +146,9 @@ export default {
   },
   methods: {
     onMenuClicked() {
-      console.log(this.params.columnApi.getAllColumns());
+      console.log(this.params.columnApi.getAllDisplayedColumns());
+      this.updateDisplayColumn();
+      // console.log(this.params.api.getColumnDefs());
       // this.params.showColumnMenu(this.$refs.menuButton);
     },
 
@@ -137,7 +174,48 @@ export default {
       }
     },
 
-    getColumnTree() {
+    initAllColumns() {
+      const allColumns = [...this.params.api.getColumnDefs()];
+
+      allColumns.forEach((element) => {
+        if (element.children) {
+          this.allColumns.push({
+            id: element.groupId,
+            name: element.headerName,
+            children: element.children.map((child) => {
+              return {
+                id: child.colId,
+                name: child.headerName,
+              };
+            }),
+          });
+        } else {
+          this.allColumns.push({
+            id: element.colId,
+            name: element.headerName,
+          });
+        }
+      });
+    },
+
+    updateDisplayColumn() {
+      const allDisplayColumns = [
+        ...this.params.columnApi.getAllDisplayedColumns(),
+      ];
+
+      this.displayColumns = [];
+
+      allDisplayColumns.forEach((element) => {
+        this.displayColumns.push(element.colId);
+      });
+    },
+
+    updateMenuColumn(event) {
+      this.allColumns.forEach((element) => {
+        if (!Object.assign([], event).includes(element.id)) {
+          this.params.columnApi.setColumnVisible(element.id, false);
+        }
+      });
     },
   },
 };
@@ -161,5 +239,9 @@ export default {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.ps {
+  height: 200px;
 }
 </style>
