@@ -23,7 +23,7 @@
         </template>
 
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
-        <v-card text tile width="200px">
+        <v-card text tile width="200px" height="300px">
           <v-item-group v-model="menuTab" class="text-center" mandatory>
             <div class="flex flex-row">
               <v-item
@@ -48,45 +48,43 @@
           </v-item-group>
 
           <v-window v-model="menuTab" class="pb-1">
-            <perfect-scrollbar>
-              <v-window-item>
-                <v-card color="transparent">menu</v-card>
-              </v-window-item>
-              <v-window-item>
-                <v-card color="transparent">filter</v-card>
-              </v-window-item>
-              <v-window-item>
-                <v-card color="transparent">
-                  <v-text-field
-                    v-model="columnSearch"
-                    label="Tìm..."
-                    placeholder="Tên cột"
-                    outlined
-                    hide-details
-                    dense
-                    clearable
-                    clear-icon="mdi-close-circle-outline"
-                    class="mb-0 pb-0 mt-2 px-2"
-                  ></v-text-field>
-                  <v-treeview
-                    v-model="displayColumns"
-                    item-key="id"
-                    @input="updateMenuColumn($event)"
-                    dense
-                    open-all
-                    open-on-click
-                    selectable
-                    selected-color="primary"
-                    :items="allColumns"
-                    :search="columnSearch"
-                  >
-                    <template v-slot:label="{ item }">
-                      <div class="text-xs">{{ item.name }}</div>
-                    </template>
-                  </v-treeview>
-                </v-card>
-              </v-window-item>
-            </perfect-scrollbar>
+            <v-window-item>
+              <v-card color="transparent">menu</v-card>
+            </v-window-item>
+            <v-window-item>
+              <v-card color="transparent">filter</v-card>
+            </v-window-item>
+            <v-window-item>
+              <v-card color="transparent">
+                <v-text-field
+                  v-model="columnSearch"
+                  label="Tìm..."
+                  placeholder="Tên cột"
+                  outlined
+                  hide-details
+                  dense
+                  clearable
+                  clear-icon="mdi-close-circle-outline"
+                  class="mb-0 pb-0 mt-2 px-1 mx-1"
+                ></v-text-field>
+                <v-treeview
+                  v-model="displayColumns"
+                  item-key="id"
+                  @input="updateMenuColumn($event)"
+                  dense
+                  open-all
+                  open-on-click
+                  selectable
+                  selected-color="primary"
+                  :items="allColumns"
+                  :search="columnSearch"
+                >
+                  <template v-slot:label="{ item }">
+                    <div class="text-xs">{{ item.name }}</div>
+                  </template>
+                </v-treeview>
+              </v-card>
+            </v-window-item>
           </v-window>
         </v-card>
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
@@ -146,7 +144,7 @@ export default {
   },
   methods: {
     onMenuClicked() {
-      console.log(this.params.columnApi.getAllDisplayedColumns());
+      console.log(this.params.columnApi.getAllColumns());
       this.updateDisplayColumn();
       // console.log(this.params.api.getColumnDefs());
       // this.params.showColumnMenu(this.$refs.menuButton);
@@ -211,9 +209,20 @@ export default {
     },
 
     updateMenuColumn(event) {
-      this.allColumns.forEach((element) => {
-        if (!Object.assign([], event).includes(element.id)) {
-          this.params.columnApi.setColumnVisible(element.id, false);
+      const seletcion = Object.assign([], event);
+      const allColumns = [...this.params.columnApi.getAllColumns()];
+
+      allColumns.forEach((element) => {
+        if (seletcion.includes(element.colId)) {
+          //console.log(element.colId);
+          // console.log(this.params.columnApi.getColumn(element));
+          this.params.columnApi.setColumnVisible(element.colId, true);
+        } else {
+          this.params.columnApi.setColumnGroupOpened(
+            element.parent.groupId,
+            true
+          );
+          this.params.columnApi.setColumnVisible(element.colId, false);
         }
       });
     },
