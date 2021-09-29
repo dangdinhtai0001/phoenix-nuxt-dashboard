@@ -49,12 +49,56 @@
 
           <v-window v-model="menuTab" class="pb-1">
             <perfect-scrollbar>
+              <!-- -------------------------------------------------- general menu tab -------------------------------------------------- -->
               <v-window-item>
-                <v-card color="transparent">menu </v-card>
+                <v-card color="transparent">
+                  <v-menu
+                    offset-x
+                    transition="slide-x-transition"
+                    :close-on-content-click="false"
+                    open-on-hover
+                    link
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn block small tile text v-bind="attrs" v-on="on">
+                        <v-icon left> mdi-pin </v-icon>
+                        <div class="text-xs">Ghim cột</div>
+                        <v-spacer></v-spacer>
+                        <v-icon right> mdi-menu-right </v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list class="pt-0 ml-1">
+                      <v-list-item
+                        dense
+                        v-for="(item, index) in generalMenuPinOptions"
+                        :key="index"
+                        link
+                      >
+                        <v-list-item-title @click="onClickPinMenu(item)">
+                          <div class="flex flex-row cursor-pointer">
+                            <div class="flex-grow">
+                              {{ item.name }}
+                            </div>
+                            <v-icon
+                              v-if="params.column.pinned == item.code"
+                              small
+                            >
+                              mdi-check
+                            </v-icon>
+                          </div>
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-card>
               </v-window-item>
+              <!-- -------------------------------------------------- general menu tab -------------------------------------------------- -->
+
               <v-window-item>
                 <v-card color="transparent">filter</v-card>
               </v-window-item>
+
+              <!-- -------------------------------------------------- column menu tab -------------------------------------------------- -->
               <v-window-item>
                 <v-card color="transparent">
                   <div class="flex flex-row">
@@ -99,6 +143,7 @@
                   </v-treeview>
                 </v-card>
               </v-window-item>
+              <!-- -------------------------------------------------- column menu tab -------------------------------------------------- -->
             </perfect-scrollbar>
           </v-window>
         </v-card>
@@ -154,6 +199,14 @@ export default {
         { icon: "mdi-menu" },
         { icon: "mdi-filter" },
         { icon: "mdi-view-column" },
+      ];
+    },
+
+    generalMenuPinOptions() {
+      return [
+        { code: "left", name: "Ghim trái" },
+        { code: "right", name: "Ghim phải" },
+        { code: null, name: "Không ghim" },
       ];
     },
   },
@@ -258,6 +311,11 @@ export default {
       }
 
       this.updateMenuColumn(this.displayColumns);
+    },
+
+    onClickPinMenu(item) {
+      const col = this.params.column.colId;
+      this.params.columnApi.setColumnPinned(col, item.code);
     },
   },
 };
