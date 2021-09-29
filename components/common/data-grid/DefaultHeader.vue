@@ -23,7 +23,7 @@
         </template>
 
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
-        <v-card text tile width="200px" height="300px">
+        <v-card text tile width="220px" height="300px">
           <v-item-group v-model="menuTab" class="text-center" mandatory>
             <div class="flex flex-row">
               <v-item
@@ -48,43 +48,58 @@
           </v-item-group>
 
           <v-window v-model="menuTab" class="pb-1">
-            <v-window-item>
-              <v-card color="transparent">menu</v-card>
-            </v-window-item>
-            <v-window-item>
-              <v-card color="transparent">filter</v-card>
-            </v-window-item>
-            <v-window-item>
-              <v-card color="transparent">
-                <v-text-field
-                  v-model="columnSearch"
-                  label="Tìm..."
-                  placeholder="Tên cột"
-                  outlined
-                  hide-details
-                  dense
-                  clearable
-                  clear-icon="mdi-close-circle-outline"
-                  class="mb-0 pb-0 mt-2 px-1 mx-1"
-                ></v-text-field>
-                <v-treeview
-                  v-model="displayColumns"
-                  item-key="id"
-                  @input="updateMenuColumn($event)"
-                  dense
-                  open-all
-                  open-on-click
-                  selectable
-                  selected-color="primary"
-                  :items="allColumns"
-                  :search="columnSearch"
-                >
-                  <template v-slot:label="{ item }">
-                    <div class="text-xs">{{ item.name }}</div>
-                  </template>
-                </v-treeview>
-              </v-card>
-            </v-window-item>
+            <perfect-scrollbar>
+              <v-window-item>
+                <v-card color="transparent">menu </v-card>
+              </v-window-item>
+              <v-window-item>
+                <v-card color="transparent">filter</v-card>
+              </v-window-item>
+              <v-window-item>
+                <v-card color="transparent">
+                  <div class="flex flex-row">
+                    <div>
+                      <v-checkbox
+                        @change="onCheckAllColumnChange($event)"
+                        class="mr-0 ml-1"
+                      >
+                      </v-checkbox>
+                    </div>
+                    <div class="mb-0 pb-0 mt-2 pl-0 ml-0 pr-1 mr-1">
+                      <v-text-field
+                        v-model="columnSearch"
+                        label="Tìm..."
+                        placeholder="Tên cột"
+                        outlined
+                        hide-details
+                        dense
+                        clearable
+                        clear-icon="mdi-close-circle-outline"
+                      ></v-text-field>
+                    </div>
+                  </div>
+                  <v-divider></v-divider>
+
+                  <v-treeview
+                    v-model="displayColumns"
+                    item-key="id"
+                    @input="updateMenuColumn($event)"
+                    dense
+                    open-all
+                    open-on-click
+                    selectable
+                    selected-color="primary"
+                    :items="allColumns"
+                    :search="columnSearch"
+                    transition="slide-y-transition"
+                  >
+                    <template v-slot:label="{ item }">
+                      <div class="text-xs">{{ item.name }}</div>
+                    </template>
+                  </v-treeview>
+                </v-card>
+              </v-window-item>
+            </perfect-scrollbar>
           </v-window>
         </v-card>
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
@@ -212,19 +227,37 @@ export default {
       const seletcion = Object.assign([], event);
       const allColumns = [...this.params.columnApi.getAllColumns()];
 
+      console.log(event, seletcion);
+
       allColumns.forEach((element) => {
+        this.params.columnApi.setColumnGroupOpened(
+          element.parent.groupId,
+          true
+        );
         if (seletcion.includes(element.colId)) {
-          //console.log(element.colId);
-          // console.log(this.params.columnApi.getColumn(element));
           this.params.columnApi.setColumnVisible(element.colId, true);
         } else {
-          this.params.columnApi.setColumnGroupOpened(
-            element.parent.groupId,
-            true
-          );
           this.params.columnApi.setColumnVisible(element.colId, false);
         }
       });
+    },
+
+    onCheckAllColumnChange(event) {
+      const allColumns = [...this.params.columnApi.getAllColumns()];
+      this.displayColumns = [];
+
+      let i = 0;
+
+      if (event) {
+        allColumns.forEach((element) => {
+          // this.displayColumns.push(element.colId);
+          this.$set(this.displayColumns, i++, element.colId);
+        });
+      } else {
+        this.$set(this.displayColumns, i++, this.params.column.colId);
+      }
+
+      this.updateMenuColumn(this.displayColumns);
     },
   },
 };
@@ -251,6 +284,6 @@ export default {
 }
 
 .ps {
-  height: 200px;
+  height: 250px;
 }
 </style>
