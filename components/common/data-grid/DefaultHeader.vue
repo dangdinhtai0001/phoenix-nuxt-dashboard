@@ -100,34 +100,36 @@
                     </v-list>
                   </v-menu>
                   <!-- --------------------------------------- PIN --------------------------------------- -->
-                  <v-divider class="my-1"></v-divider>
+                  <v-divider class="my-2"></v-divider>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
-                  <v-btn
-                    block
-                    small
-                    tile
-                    text
-                    class="my-1"
-                    @click="onAutoSizeThisColumnClick()"
-                  >
-                    <v-icon small left> fas fa-arrows-alt-h </v-icon>
-                    <div class="text-xs">Căn chỉnh cột</div>
-                    <v-spacer></v-spacer>
-                  </v-btn>
-                  <v-btn
-                    block
-                    small
-                    tile
-                    text
-                    class="my-1"
-                    @click="onAutoSizeAllColumnClick()"
-                  >
-                    <v-icon small left> fas fa-arrows-alt </v-icon>
-                    <div class="text-xs">Căn chỉnh tất cả cột</div>
-                    <v-spacer></v-spacer>
-                  </v-btn>
+                  <div>
+                    <v-btn
+                      block
+                      small
+                      tile
+                      text
+                      class="my-1"
+                      @click="onAutoSizeThisColumnClick()"
+                    >
+                      <v-icon small left> fas fa-arrows-alt-h </v-icon>
+                      <div class="text-xs">Căn chỉnh cột</div>
+                      <v-spacer></v-spacer>
+                    </v-btn>
+                    <v-btn
+                      block
+                      small
+                      tile
+                      text
+                      class="my-1"
+                      @click="onAutoSizeAllColumnClick()"
+                    >
+                      <v-icon small left> fas fa-arrows-alt </v-icon>
+                      <div class="text-xs">Căn chỉnh tất cả cột</div>
+                      <v-spacer></v-spacer>
+                    </v-btn>
+                  </div>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
-                  <v-divider class="my-1"></v-divider>
+                  <v-divider class="my-2"></v-divider>
                   <!-- --------------------------------------- ____ --------------------------------------- -->
                 </v-card>
               </v-window-item>

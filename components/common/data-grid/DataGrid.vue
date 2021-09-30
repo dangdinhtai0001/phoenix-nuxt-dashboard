@@ -17,7 +17,6 @@
         :animateRows="true"
         :pagination="true"
         :suppressHorizontalScroll="false"
-        scrollbarWidth="0"
       ></ag-grid-vue>
     </div>
 
@@ -184,9 +183,10 @@ export default {
         "#main-grid .ag-horizontal-right-spacer"
       );
 
-      const gridCenterColsViewPort = document.querySelector(
-        "#main-grid .ag-center-cols-viewport"
-      );
+      // const gridCenterColsViewPort = document.querySelector(
+      //   "#main-grid .ag-center-cols-viewport"
+      // );
+      const gridCenterColsViewPort = null;
 
       if (gridBodyViewPort) {
         const ps = new PerfectScrollbar(gridBodyViewPort, {
@@ -249,6 +249,17 @@ export default {
 .default-grid-size {
   width: 100%;
   height: 80vh;
+}
+
+#main-grid .ag-body-viewport,
+#main-grid .ag-body-horizontal-scroll-viewport {
+  position: relative;
+  overflow: hidden !important;
+}
+
+.ps__rail-x,
+.ps__rail-y {
+  opacity: 0.6;
 }
 </style>
 
