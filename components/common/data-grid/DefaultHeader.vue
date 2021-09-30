@@ -61,7 +61,15 @@
                     link
                   >
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn block small tile text v-bind="attrs" v-on="on">
+                      <v-btn
+                        block
+                        small
+                        tile
+                        text
+                        class="my-1"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
                         <v-icon left> mdi-pin </v-icon>
                         <div class="text-xs">Ghim cột</div>
                         <v-spacer></v-spacer>
@@ -94,7 +102,33 @@
                   <!-- --------------------------------------- PIN --------------------------------------- -->
                   <v-divider class="my-1"></v-divider>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
+                  <v-btn
+                    block
+                    small
+                    tile
+                    text
+                    class="my-1"
+                    @click="onAutoSizeThisColumnClick()"
+                  >
+                    <v-icon small left> fas fa-arrows-alt-h </v-icon>
+                    <div class="text-xs">Căn chỉnh cột</div>
+                    <v-spacer></v-spacer>
+                  </v-btn>
+                  <v-btn
+                    block
+                    small
+                    tile
+                    text
+                    class="my-1"
+                    @click="onAutoSizeAllColumnClick()"
+                  >
+                    <v-icon small left> fas fa-arrows-alt </v-icon>
+                    <div class="text-xs">Căn chỉnh tất cả cột</div>
+                    <v-spacer></v-spacer>
+                  </v-btn>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
+                  <v-divider class="my-1"></v-divider>
+                  <!-- --------------------------------------- ____ --------------------------------------- -->
                 </v-card>
               </v-window-item>
               <!-- -------------------------------------------------- general menu tab -------------------------------------------------- -->
@@ -140,7 +174,7 @@
                     selected-color="primary"
                     :items="allColumns"
                     :search="columnSearch"
-                    transition="slide-y-transition"
+                    transition
                   >
                     <template v-slot:label="{ item }">
                       <div class="text-xs">{{ item.name }}</div>
@@ -321,6 +355,15 @@ export default {
     onClickPinMenu(item) {
       const col = this.params.column.colId;
       this.params.columnApi.setColumnPinned(col, item.code);
+    },
+
+    onAutoSizeThisColumnClick() {
+      const col = this.params.column.colId;
+      this.params.columnApi.autoSizeColumn(col, false);
+    },
+
+    onAutoSizeAllColumnClick() {
+      this.params.columnApi.autoSizeAllColumns(false);
     },
   },
 };

@@ -151,8 +151,6 @@ export default {
 
     // fetch grid def from api
     onReady(params) {
-      console.log("onReady");
-
       this.api = params.api;
       this.api.sizeColumnsToFit();
 
@@ -222,6 +220,7 @@ export default {
         );
         ps.update();
       }
+
       if (gridCenterColsViewPort) {
         const ps = new PerfectScrollbar(gridCenterColsViewPort, defaultOptions);
         ps.update();
