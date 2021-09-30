@@ -1,6 +1,10 @@
 <template>
   <div>
     <div class="default-grid-size">
+      <link
+        href="https://fonts.googleapis.com/css?family=Roboto"
+        rel="stylesheet"
+      />
       <ag-grid-vue
         id="main-grid"
         class="ag-theme-alpine default-grid-size"
@@ -17,6 +21,10 @@
         :animateRows="true"
         :pagination="true"
         :suppressHorizontalScroll="false"
+        :alwaysShowVerticalScroll="true"
+        :columnHoverHighlight="true"
+        :debounceVerticalScrollbar="false"
+        :scrollbarWidth="15"
       ></ag-grid-vue>
     </div>
 
@@ -132,7 +140,7 @@ export default {
     await this.createColumnDefs();
     await this.createRowData();
 
-    this.paginationPageSize = 30;
+    this.paginationPageSize = 150;
 
     this.api.paginationSetPageSize(this.paginationPageSize);
     this.initPaginationOption();
@@ -164,7 +172,7 @@ export default {
       const defaultOptions = {
         wheelSpeed: 1,
         wheelPropagation: true,
-        minScrollbarLength: 20,
+        minScrollbarLength: 10,
         // suppressScrollX: true,
       };
       const gridBodyViewPort = document.querySelector(
@@ -178,21 +186,24 @@ export default {
       const gridHorizontalLeftViewPort = document.querySelector(
         "#main-grid .ag-horizontal-left-spacer"
       );
+      // const gridHorizontalLeftViewPort = null;
 
       const gridHorizontalRightViewPort = document.querySelector(
         "#main-grid .ag-horizontal-right-spacer"
       );
+      // const gridHorizontalRightViewPort = null;
 
-      // const gridCenterColsViewPort = document.querySelector(
-      //   "#main-grid .ag-center-cols-viewport"
-      // );
-      const gridCenterColsViewPort = null;
+      const gridCenterColsViewPort = document.querySelector(
+        "#main-grid .ag-center-cols-viewport"
+        // "#main-grid .ag-center-cols-clipper"
+      );
+      // const gridCenterColsViewPort = null;
 
       if (gridBodyViewPort) {
         const ps = new PerfectScrollbar(gridBodyViewPort, {
           wheelSpeed: 1,
           wheelPropagation: true,
-          minScrollbarLength: 20,
+          minScrollbarLength: 10,
           suppressScrollX: true,
         });
         ps.update();
@@ -252,7 +263,8 @@ export default {
 }
 
 #main-grid .ag-body-viewport,
-#main-grid .ag-body-horizontal-scroll-viewport {
+#main-grid .ag-body-horizontal-scroll-viewport,
+#main-grid .ag-center-cols-viewport {
   position: relative;
   overflow: hidden !important;
 }
@@ -260,6 +272,11 @@ export default {
 .ps__rail-x,
 .ps__rail-y {
   opacity: 0.6;
+}
+
+::-webkit-scrollbar {
+  width: 0; /* remove scrollbar space */
+  background: transparent; /* optional: just make scrollbar invisible */
 }
 </style>
 

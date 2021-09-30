@@ -1,6 +1,8 @@
 <template>
   <div class="ag-header-group-cell-label">
-    <div class="text-base font-bold truncate  capitalize mx-1">{{ params.displayName }}</div>
+    <div class="text-base font-bold truncate capitalize mx-1">
+      {{ params.displayName }}
+    </div>
     <div
       class="customExpandButton"
       :class="{ expanded: groupExpanded, collapsed: !groupExpanded }"

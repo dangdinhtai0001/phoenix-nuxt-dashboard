@@ -99,6 +99,18 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
+                  <v-btn
+                    block
+                    small
+                    tile
+                    text
+                    class="my-1"
+                    @click="onClearPinAllColumnClick()"
+                  >
+                    <v-icon small left> mdi-pin-off </v-icon>
+                    <div class="text-xs">Bỏ ghim</div>
+                    <v-spacer></v-spacer>
+                  </v-btn>
                   <!-- --------------------------------------- PIN --------------------------------------- -->
                   <v-divider class="my-2"></v-divider>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
@@ -366,6 +378,12 @@ export default {
 
     onAutoSizeAllColumnClick() {
       this.params.columnApi.autoSizeAllColumns(false);
+    },
+
+    onClearPinAllColumnClick() {
+      this.params.columnApi.applyColumnState({
+        defaultState: { pinned: null },
+      });
     },
   },
 };
