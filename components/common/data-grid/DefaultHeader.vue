@@ -23,7 +23,7 @@
         </template>
 
         <!-- -------------------------------------------------- header menu -------------------------------------------------- -->
-        <v-card text tile width="220px" height="300px">
+        <v-card text tile width="220px" height="250px">
           <v-item-group v-model="menuTab" class="text-center" mandatory>
             <div class="flex flex-row">
               <v-item
@@ -45,6 +45,7 @@
                 </div>
               </v-item>
             </div>
+            <v-divider class="mb-2"></v-divider>
           </v-item-group>
 
           <v-window v-model="menuTab" class="pb-1">
@@ -142,7 +143,20 @@
                   </div>
                   <!-- --------------------------------------- SIZE --------------------------------------- -->
                   <v-divider class="my-2"></v-divider>
-                  <!-- --------------------------------------- ____ --------------------------------------- -->
+                  <!-- --------------------------------------- RESET --------------------------------------- -->
+                  <v-btn
+                    block
+                    small
+                    tile
+                    text
+                    class="my-1"
+                    @click="onResetColumnStateClick()"
+                  >
+                    <v-icon small left> fas fa-sync </v-icon>
+                    <div class="text-xs">Reset</div>
+                    <v-spacer></v-spacer>
+                  </v-btn>
+                  <!-- --------------------------------------- RESET --------------------------------------- -->
                 </v-card>
               </v-window-item>
               <!-- -------------------------------------------------- general menu tab -------------------------------------------------- -->
@@ -293,6 +307,48 @@ export default {
       }
     },
 
+    onCheckAllColumnChange(event) {
+      const allColumns = [...this.params.columnApi.getAllColumns()];
+      this.displayColumns = [];
+
+      let i = 0;
+
+      if (event) {
+        allColumns.forEach((element) => {
+          // this.displayColumns.push(element.colId);
+          this.$set(this.displayColumns, i++, element.colId);
+        });
+      } else {
+        this.$set(this.displayColumns, i++, this.params.column.colId);
+      }
+
+      this.updateMenuColumn(this.displayColumns);
+    },
+
+    onClickPinMenu(item) {
+      const col = this.params.column.colId;
+      this.params.columnApi.setColumnPinned(col, item.code);
+    },
+
+    onAutoSizeThisColumnClick() {
+      const col = this.params.column.colId;
+      this.params.columnApi.autoSizeColumn(col, false);
+    },
+
+    onAutoSizeAllColumnClick() {
+      this.params.columnApi.autoSizeAllColumns(false);
+    },
+
+    onClearPinAllColumnClick() {
+      this.params.columnApi.applyColumnState({
+        defaultState: { pinned: null },
+      });
+    },
+
+    onResetColumnStateClick() {
+      this.params.columnApi.resetColumnState();
+    },
+
     initAllColumns() {
       const allColumns = [...this.params.api.getColumnDefs()];
 
@@ -347,44 +403,6 @@ export default {
         }
       });
     },
-
-    onCheckAllColumnChange(event) {
-      const allColumns = [...this.params.columnApi.getAllColumns()];
-      this.displayColumns = [];
-
-      let i = 0;
-
-      if (event) {
-        allColumns.forEach((element) => {
-          // this.displayColumns.push(element.colId);
-          this.$set(this.displayColumns, i++, element.colId);
-        });
-      } else {
-        this.$set(this.displayColumns, i++, this.params.column.colId);
-      }
-
-      this.updateMenuColumn(this.displayColumns);
-    },
-
-    onClickPinMenu(item) {
-      const col = this.params.column.colId;
-      this.params.columnApi.setColumnPinned(col, item.code);
-    },
-
-    onAutoSizeThisColumnClick() {
-      const col = this.params.column.colId;
-      this.params.columnApi.autoSizeColumn(col, false);
-    },
-
-    onAutoSizeAllColumnClick() {
-      this.params.columnApi.autoSizeAllColumns(false);
-    },
-
-    onClearPinAllColumnClick() {
-      this.params.columnApi.applyColumnState({
-        defaultState: { pinned: null },
-      });
-    },
   },
 };
 </script>
@@ -410,6 +428,6 @@ export default {
 }
 
 .ps {
-  height: 250px;
+  height: 200px;
 }
 </style>
