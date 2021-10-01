@@ -161,9 +161,9 @@
               </v-window-item>
               <!-- -------------------------------------------------- general menu tab -------------------------------------------------- -->
 
-              <v-window-item>
+              <!-- <v-window-item>
                 <v-card color="transparent">filter</v-card>
-              </v-window-item>
+              </v-window-item> -->
 
               <!-- -------------------------------------------------- column menu tab -------------------------------------------------- -->
               <v-window-item>
@@ -264,7 +264,7 @@ export default {
     menuItem() {
       return [
         { icon: "mdi-menu" },
-        { icon: "mdi-filter" },
+        // { icon: "mdi-filter" },
         { icon: "mdi-view-column" },
       ];
     },

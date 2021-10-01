@@ -21,10 +21,10 @@
         :animateRows="true"
         :pagination="true"
         :suppressHorizontalScroll="false"
-        :alwaysShowVerticalScroll="true"
-        :columnHoverHighlight="true"
+        :alwaysShowVerticalScroll="false"
         :debounceVerticalScrollbar="false"
-        :scrollbarWidth="15"
+        :columnHoverHighlight="true"
+        :scrollbarWidth="20"
       ></ag-grid-vue>
     </div>
 
@@ -172,7 +172,7 @@ export default {
       const defaultOptions = {
         wheelSpeed: 1,
         wheelPropagation: true,
-        minScrollbarLength: 10,
+        minScrollbarLength: 20,
         // suppressScrollX: true,
       };
       const gridBodyViewPort = document.querySelector(
@@ -199,15 +199,15 @@ export default {
       );
       // const gridCenterColsViewPort = null;
 
-      if (gridBodyViewPort) {
-        const ps = new PerfectScrollbar(gridBodyViewPort, {
-          wheelSpeed: 1,
-          wheelPropagation: true,
-          minScrollbarLength: 10,
-          suppressScrollX: true,
-        });
-        ps.update();
-      }
+      // if (gridBodyViewPort) {
+      //   const ps = new PerfectScrollbar(gridBodyViewPort, {
+      //     wheelSpeed: 1,
+      //     wheelPropagation: true,
+      //     minScrollbarLength: 10,
+      //     suppressScrollX: true,
+      //   });
+      //   ps.update();
+      // }
 
       if (gridHorizontalScrollViewPort) {
         const ps = new PerfectScrollbar(
@@ -216,6 +216,7 @@ export default {
         );
         ps.update();
       }
+
       if (gridHorizontalLeftViewPort) {
         const ps = new PerfectScrollbar(
           gridHorizontalLeftViewPort,
@@ -232,10 +233,10 @@ export default {
         ps.update();
       }
 
-      if (gridCenterColsViewPort) {
-        const ps = new PerfectScrollbar(gridCenterColsViewPort, defaultOptions);
-        ps.update();
-      }
+      // if (gridCenterColsViewPort) {
+      //   const ps = new PerfectScrollbar(gridCenterColsViewPort, defaultOptions);
+      //   ps.update();
+      // }
     },
     initPaginationOption() {
       this.paginationOptions = {
@@ -264,19 +265,20 @@ export default {
 
 #main-grid .ag-body-viewport,
 #main-grid .ag-body-horizontal-scroll-viewport,
-#main-grid .ag-center-cols-viewport {
+#main-grid .ag-horizontal-left-spacer,
+#main-grid .ag-horizontal-right-spacer {
   position: relative;
   overflow: hidden !important;
+}
+
+#main-grid .ag-body-horizontal-scroll-viewport {
+  width: calc(100%-500px) !important;
 }
 
 .ps__rail-x,
 .ps__rail-y {
   opacity: 0.6;
-}
-
-::-webkit-scrollbar {
-  width: 0; /* remove scrollbar space */
-  background: transparent; /* optional: just make scrollbar invisible */
+  width: 30px;
 }
 </style>
 
