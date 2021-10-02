@@ -21,7 +21,7 @@
         :animateRows="true"
         :pagination="true"
         :suppressHorizontalScroll="false"
-        :alwaysShowVerticalScroll="false"
+        :alwaysShowVerticalScroll="true"
         :debounceVerticalScrollbar="false"
         :columnHoverHighlight="true"
         :scrollbarWidth="20"
@@ -199,15 +199,15 @@ export default {
       );
       // const gridCenterColsViewPort = null;
 
-      // if (gridBodyViewPort) {
-      //   const ps = new PerfectScrollbar(gridBodyViewPort, {
-      //     wheelSpeed: 1,
-      //     wheelPropagation: true,
-      //     minScrollbarLength: 10,
-      //     suppressScrollX: true,
-      //   });
-      //   ps.update();
-      // }
+      if (gridBodyViewPort) {
+        const ps = new PerfectScrollbar(gridBodyViewPort, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 10,
+          suppressScrollX: true,
+        });
+        ps.update();
+      }
 
       if (gridHorizontalScrollViewPort) {
         const ps = new PerfectScrollbar(
@@ -271,8 +271,8 @@ export default {
   overflow: hidden !important;
 }
 
-#main-grid .ag-body-horizontal-scroll-viewport {
-  width: calc(100%-500px) !important;
+#main-grid .ag-header-viewport {
+  width: 98% !important;
 }
 
 .ps__rail-x,

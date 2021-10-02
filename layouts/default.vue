@@ -51,13 +51,13 @@
     <!-- -------------------------- app bar -------------------------- -->
 
     <!-- -------------------------- main -------------------------- -->
-    <perfect-scrollbar>
-      <v-main>
-        <v-container fluid>
+    <v-main>
+      <perfect-scrollbar>
+        <v-container fluid id="main-container">
           <nuxt />
         </v-container>
-      </v-main>
-    </perfect-scrollbar>
+      </perfect-scrollbar>
+    </v-main>
     <!-- -------------------------- main -------------------------- -->
 
     <!-- -------------------------- right drawer -------------------------- -->
@@ -74,7 +74,7 @@
     <!-- -------------------------- right drawer -------------------------- -->
 
     <!-- -------------------------- footer -------------------------- -->
-    <v-footer :absolute="false" app>
+    <v-footer :absolute="false" app height="30px">
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
     <!-- -------------------------- footer -------------------------- -->
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     setMenuItems() {
-      this.items = this.$store.state.application.applicationMenu;
+      this.items = [...this.$store.state.application.applicationMenu];
     },
   },
 };
@@ -130,7 +130,13 @@ export default {
 
 <style scoped>
 .ps {
-  height: 100vh;
+  height: calc(100vh - 60px - 30px);
+  /* 100 vh - height(app bar) - height(footer) */
+}
+
+#main-container {
+  position: relative;
+  overflow: hidden !important;
 }
 </style>
 
