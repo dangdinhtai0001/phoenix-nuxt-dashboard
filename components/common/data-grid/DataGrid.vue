@@ -21,7 +21,7 @@
         :animateRows="true"
         :pagination="true"
         :suppressHorizontalScroll="false"
-        :alwaysShowVerticalScroll="true"
+        :alwaysShowVerticalScroll="false"
         :debounceVerticalScrollbar="false"
         :columnHoverHighlight="true"
         :scrollbarWidth="20"
@@ -175,6 +175,7 @@ export default {
         minScrollbarLength: 20,
         // suppressScrollX: true,
       };
+
       const gridBodyViewPort = document.querySelector(
         "#main-grid .ag-body-viewport"
       );
@@ -233,10 +234,10 @@ export default {
         ps.update();
       }
 
-      // if (gridCenterColsViewPort) {
-      //   const ps = new PerfectScrollbar(gridCenterColsViewPort, defaultOptions);
-      //   ps.update();
-      // }
+      if (gridCenterColsViewPort) {
+        const ps = new PerfectScrollbar(gridCenterColsViewPort, defaultOptions);
+        ps.update();
+      }
     },
     initPaginationOption() {
       this.paginationOptions = {
@@ -271,14 +272,16 @@ export default {
   overflow: hidden !important;
 }
 
-#main-grid .ag-header-viewport {
-  width: 98% !important;
-}
-
 .ps__rail-x,
 .ps__rail-y {
   opacity: 0.6;
-  width: 30px;
+}
+
+::v-deep .ag-pinned-right-header {
+  right: -19px;
+}
+::v-deep .ag-horizontal-right-spacer {
+  right: -19px;
 }
 </style>
 
